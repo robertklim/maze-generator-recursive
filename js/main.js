@@ -2,6 +2,7 @@ let cols, rows;
 let w = 60;
 let grid = [];
 let current;
+let stack = [];
 
 function getIndex(i, j) {
     //edges
@@ -17,7 +18,6 @@ function removeWalls(a, b) {
     if (x === 1) {
         a.walls[3] = false;
         b.walls[1] = false;
-        console.log(a);
     } else if (x === -1) {
         a.walls[1] = false;
         b.walls[3] = false;
@@ -115,7 +115,7 @@ function setup() {
     createCanvas(601, 601);
     cols = Math.floor(width/w);
     rows = Math.floor(height/w);
-    frameRate(5)
+    // frameRate(5)
 
     for (let j = 0; j < rows; j++) {
         for (let i = 0; i < cols; i++) {
@@ -144,11 +144,16 @@ function draw() {
     if (next) {
         next.visited = true;
 
+        // step 2
+        stack.push(current);
+
         // step 3
         removeWalls(current, next);
 
         // step 4
         current = next;
+    } else if (stack.length > 0) {
+        current = stack.pop();
     }
 
 }
