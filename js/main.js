@@ -11,6 +11,29 @@ function getIndex(i, j) {
     return i + j * cols;
 }
 
+function removeWalls(a, b) {
+    
+    let x = a.i - b.i;
+    if (x === 1) {
+        a.walls[3] = false;
+        b.walls[1] = false;
+        console.log(a);
+    } else if (x === -1) {
+        a.walls[1] = false;
+        b.walls[3] = false;
+    }
+
+    let y = a.j - b.j;
+    if (y === 1) {
+        a.walls[0] = false;
+        b.walls[2] = false;
+    } else if (y === -1) {
+        a.walls[2] = false;
+        b.walls[0] = false;
+    }
+
+}
+
 class Cell {
     constructor(i, j) {
         this.i = i;
@@ -38,7 +61,8 @@ class Cell {
         }
 
         if (this.visited) {
-            fill(127, 0, 0);
+            noStroke();
+            fill(127, 0, 0, 50);
             rect(x, y, w, w);
         }
     }
@@ -77,6 +101,14 @@ class Cell {
 
     }
 
+    highlight() {
+        let x = this.i * w;
+        let y = this.j * w;
+        noStroke();
+        fill(255, 0, 0, 100);
+        rect(x, y, w, w);
+    }
+
 }
 
 function setup() {
@@ -104,11 +136,18 @@ function draw() {
     }
 
     current.visited = true;
+    current.highlight();
     
+    // step 1
     let next = current.checkNeighbors();
     
     if (next) {
         next.visited = true;
+
+        // step 3
+        removeWalls(current, next);
+
+        // step 4
         current = next;
     }
 
