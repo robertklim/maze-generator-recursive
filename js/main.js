@@ -1,12 +1,14 @@
 let cols, rows;
 let w = 60;
 let grid = [];
+let current;
 
 class Cell {
     constructor(i, j) {
         this.i = i;
         this.j = j;
         this.walls = [true, true, true, true]; // top, right, bottm, left
+        this.visited = false;
     }
 
     show() {
@@ -26,6 +28,11 @@ class Cell {
         if (this.walls[3]) {
             line(x, y + w, x, y);
         }
+
+        if (this.visited) {
+            fill(127, 0, 0);
+            rect(x, y, w, w);
+        }
     }
 
 }
@@ -42,6 +49,8 @@ function setup() {
         }
     }
 
+    current = grid[0];
+
 }
 
 function draw() {
@@ -50,5 +59,7 @@ function draw() {
     for (let i = 0; i < grid.length; i++) {
         grid[i].show();
     }
+
+    current.visited = true;
 
 }
