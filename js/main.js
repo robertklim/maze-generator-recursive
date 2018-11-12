@@ -3,6 +3,14 @@ let w = 60;
 let grid = [];
 let current;
 
+function getIndex(i, j) {
+    //edges
+    if (i < 0 || j < 0 || i > cols - 1 || j > rows - 1) {
+        return -1;
+    }
+    return i + j * cols;
+}
+
 class Cell {
     constructor(i, j) {
         this.i = i;
@@ -35,15 +43,50 @@ class Cell {
         }
     }
 
+    checkNeighbors() {
+        let neighbors = [];
+
+        let top = grid[getIndex(this.i, this.j - 1)];
+        let right = grid[getIndex(this.i + 1, this.j)];
+        let bottom = grid[getIndex(this.i, this.j + 1)];
+        let left = grid[getIndex(this.i - 1, this.j)];
+
+        // build an array of not visited cells
+        if (top && !top.visited) {
+            neighbors.push(top);
+        }
+
+        if (right && !right.visited) {
+            neighbors.push(right);
+        }
+
+        if (bottom && !bottom.visited) {
+            neighbors.push(bottom);
+        }
+
+        if (left && !left.visited) {
+            neighbors.push(left);
+        }
+
+        if (neighbors.length > 0) {
+            let r = Math.floor(random(0, neighbors.length));
+            return neighbors[r];
+        } else {
+            return undefined;
+        }
+
+    }
+
 }
 
 function setup() {
     createCanvas(601, 601);
     cols = Math.floor(width/w);
     rows = Math.floor(height/w);
+    frameRate(5)
 
-    for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < cols; j++) {
+    for (let j = 0; j < rows; j++) {
+        for (let i = 0; i < cols; i++) {
             let cell = new Cell(i, j);
             grid.push(cell);
         }
@@ -61,5 +104,12 @@ function draw() {
     }
 
     current.visited = true;
+    
+    let next = current.checkNeighbors();
+    
+    if (next) {
+        next.visited = true;
+        current = next;
+    }
 
 }
