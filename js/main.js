@@ -31,7 +31,7 @@ class Cell {
 }
 
 function setup() {
-    createCanvas(600, 600);
+    createCanvas(601, 601);
     cols = Math.floor(width/w);
     rows = Math.floor(height/w);
 
