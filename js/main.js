@@ -38,7 +38,7 @@ function setup() {
     createCanvas(601, 601);
     cols = Math.floor(width/w);
     rows = Math.floor(height/w);
-    // frameRate(5)
+    frameRate(5)
 
     for (let j = 0; j < rows; j++) {
         for (let i = 0; i < cols; i++) {
@@ -69,6 +69,7 @@ function draw() {
 
         // step 2
         stack.push(current);
+        current.onStack = true;
 
         // step 3
         removeWalls(current, next);
@@ -77,6 +78,7 @@ function draw() {
         current = next;
     } else if (stack.length > 0) {
         current = stack.pop();
+        current.onStack = false;
     }
 
 }

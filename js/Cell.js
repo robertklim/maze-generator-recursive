@@ -4,6 +4,7 @@ class Cell {
         this.j = j;
         this.walls = [true, true, true, true]; // top, right, bottm, left
         this.visited = false;
+        this.onStack = false;
     }
 
     show() {
@@ -26,7 +27,11 @@ class Cell {
 
         if (this.visited) {
             noStroke();
-            fill(127, 0, 0, 50);
+            if (!this.onStack) {
+                fill(0, 127, 0, 50);
+            } else {
+                fill(127, 0, 0, 50);
+            }
             rect(x, y, w, w);
         }
     }
